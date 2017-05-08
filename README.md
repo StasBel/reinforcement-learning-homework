@@ -1,13 +1,15 @@
 # reinforcement-learning-homework
 
-## task01
+## task03
 
 ### description
 
-[link](http://mit.spbau.ru/sewiki/images/3/30/Rl-exercise-1.pdf)
+[link](https://groups.google.com/forum/#!topic/spbau-rl/KtROpudFnWU)
 
 ### files
 
 * [.gitignore](.gitignore) - ignore file for git
 * [README.md](README.md) - README file with some description
-* [main.py](main.py) - task code 
+* [main.py](main.py) - task code
+* [blackjack.py](blackjack.py) - implementation of blackjack game
+* [iternum_conv_plot.png](iternum_conv_plot.png) - plot of win rate depends on iter num
