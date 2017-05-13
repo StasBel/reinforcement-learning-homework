@@ -1,5 +1,5 @@
 from math import exp
-from random import randint
+from random import randint, random
 from enum import Enum, auto
 from collections import namedtuple
 
@@ -20,6 +20,11 @@ class Action(Enum):
     UP = Pt(0, 1)
     RIGHT = Pt(1, 0)
     DOWN = Pt(0, -1)
+
+    @property
+    def opposite(self):
+        return {Action.LEFT: Action.RIGHT, Action.RIGHT: Action.LEFT,
+                Action.UP: Action.DOWN, Action.DOWN: Action.UP}[self]
 
 
 class Outcome(Enum):
@@ -56,7 +61,7 @@ class Lion:
 
 
 class LionCowGame:
-    def __init__(self, n, m, cown, maxa=None):
+    def __init__(self, n, m, cown, *, maxa=None, is_stohastic=False, stohastic_p=0.3):
         self.board = Board(n, m)
         pts = set()
         for _ in range(cown):
@@ -66,10 +71,11 @@ class LionCowGame:
                     pts.add(pt)
                     break
         self.cows = frozenset(Cow(pt) for pt in pts)
-        self.maxa = 4 * n * m if maxa is None else maxa
+        self.maxa = maxa
+        self.stoh_p = stohastic_p if is_stohastic else 0
 
     def new_round(self):
-        return LionCowRound(self.board, self.cows, self.maxa)
+        return LionCowRound(self.board, self.cows, self.maxa, self.stoh_p)
 
 
 class LionCowRound:
@@ -79,10 +85,11 @@ class LionCowRound:
     NO_COW_BACK_PENALTY = -50
     WRONG_MOVE_PENALTY = -10
 
-    def __init__(self, board, cows, maxa):
+    def __init__(self, board, cows, maxa, sp):
         self.board = board
         self.cows = set(cows)
         self.maxa = maxa
+        self.sp = sp
         self.cura = 0
         self.lion = Lion()
 
@@ -109,9 +116,10 @@ class LionCowRound:
             return Reward(Outcome.NOTHING, LionCowRound.WRONG_MOVE_PENALTY)
 
     def do(self, action):
+        action = action.opposite if random() < self.sp else action
         self.cura += 1
         reward = self._do(action)
-        if self.cura == self.maxa:
+        if self.maxa is not None and self.cura == self.maxa:
             reward = reward._replace(outcome=Outcome.OVER)
         return reward
 
