@@ -55,7 +55,7 @@ class QLearning:
 
 
 if __name__ == '__main__':
-    game = LionCowGame(10, 10, 2, maxa=500, is_stohastic=True)
+    game = LionCowGame(10, 10, 2, maxa=500, is_stohastic=True, stohastic_p=0.3)
     print(game.cows)
     algo = QLearning(game)
     print(algo.find_op())

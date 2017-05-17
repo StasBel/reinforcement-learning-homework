@@ -7,11 +7,14 @@ from dynaq_plus import DynaQPlus
 from itertools import chain, product
 from functools import partial
 
-games = LionCowGame(10, 10, 2), LionCowGame(10, 10, 2, maxa=500, is_stohastic=True)
+games = LionCowGame(10, 10, 2), LionCowGame(5, 5, 2, maxa=500, is_stohastic=True)
 nalgos = DynaQ, DynaQPlus
+epss = 1e-1,
+iter_nums = 30,
 ns = 1, 50, 100
-algos = lambda n: tuple(chain((QLearning,), (partial(a, n=n) for a, n in product(nalgos, (n,)))))
-iter_num = 50
+algos = lambda n: tuple(chain(*(tuple(chain((partial(QLearning, eps=e, iter_num=i),),
+                                            (partial(a, n=n, eps=e, iter_num=i) for a, n in product(nalgos, (n,))))
+                                      for e, i in product(epss, iter_nums)))))
 
 
 def draw_plot(game, filename, n):

@@ -54,8 +54,10 @@ class DynaQPlus(DynaQ):
 
 
 if __name__ == '__main__':
-    game = LionCowGame(10, 10, 2, is_stohastic=True)
+    game = LionCowGame(5, 5, 2, is_stohastic=True, maxa=500, stohastic_p=0.3)
     print(game.cows)
     algo = DynaQPlus(game)
-    print(algo.find_op())
+    rewards = algo.find_op()
+    print(rewards)
+    print(sum(reward == 500 for reward in rewards))
     algo.print_one_round()
