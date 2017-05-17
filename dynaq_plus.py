@@ -5,6 +5,7 @@ from collections import defaultdict, Counter
 from random import sample, choice, choices
 from functools import partial
 from operator import itemgetter
+from statistics import mode
 
 
 class DynaQPlus(DynaQ):
@@ -18,8 +19,8 @@ class DynaQPlus(DynaQ):
         steps_per_rnd = []
         for _ in range(self.iter_num):
             rnd = self.game.new_round()
-            Moves = defaultdict(partial(defaultdict, int))
             PQueue = set()
+            Moves = defaultdict(partial(defaultdict, int))
             steps = 0
             while True:
                 steps += 1

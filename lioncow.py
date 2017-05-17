@@ -85,11 +85,11 @@ class LionCowRound:
     NO_COW_BACK_PENALTY = -50
     WRONG_MOVE_PENALTY = -10
 
-    def __init__(self, board, cows, maxa, sp):
+    def __init__(self, board, cows, maxa, stoh_p):
         self.board = board
         self.cows = set(cows)
         self.maxa = maxa
-        self.sp = sp
+        self.stoh_p = stoh_p
         self.cura = 0
         self.lion = Lion()
 
@@ -116,7 +116,7 @@ class LionCowRound:
             return Reward(Outcome.NOTHING, LionCowRound.WRONG_MOVE_PENALTY)
 
     def do(self, action):
-        action = action.opposite if random() < self.sp else action
+        action = action.opposite if random() < self.stoh_p else action
         self.cura += 1
         reward = self._do(action)
         if self.maxa is not None and self.cura == self.maxa:
