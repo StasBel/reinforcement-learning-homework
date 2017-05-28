@@ -12,4 +12,5 @@
 * [README.md](README.md) - README file with some description
 * [tiles.py](tiles.py) - tile coding realization
 * [sarsa.py](sarsa.py) - implementation of sarsa semi-gradient algo
-* [plot.py](plot.py) - learning curve plot for sarsa
+* [plot.py](plot.py) - learning curve plot script for sarsa
+* [learning_curve.png](learning_curve.png) - learning curve plot png
