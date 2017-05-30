@@ -60,8 +60,8 @@ class SarsaSemiGradientMountainCar:
         dF[active_tiles] = 1
         return dF
 
-    def choose_action(self, S):
-        if np.random.binomial(1, self.eps) == 1:
+    def choose_action(self, S, eps_greedy=True):
+        if eps_greedy and np.random.binomial(1, self.eps) == 1:
             return int(np.random.choice(self.AS))
         QS = [self.Q(S, A) for A in self.AS]
         mQS = max(QS)
@@ -72,7 +72,7 @@ class SarsaSemiGradientMountainCar:
         steps_nums = []
         for _ in range(num_of_episodes):
             S = self.env.reset()
-            A = self.choose_action(S)
+            A = self.choose_action(S, not do_render)
             if do_render:
                 self.env.render()
             step_num = 0
@@ -84,7 +84,7 @@ class SarsaSemiGradientMountainCar:
                 if done:
                     self.tetta += self.alpha * (R - self.Q(S, A)) * self.dQ(S, A)
                     break
-                Ap = self.choose_action(Sp)
+                Ap = self.choose_action(Sp, not do_render)
                 self.tetta += self.alpha * (R + self.gamma * self.Q(Sp, Ap) - self.Q(S, A)) * self.dQ(S, A)
                 S, A = Sp, Ap
             steps_nums.append(step_num)
@@ -97,4 +97,4 @@ class SarsaSemiGradientMountainCar:
 if __name__ == '__main__':
     algo = SarsaSemiGradientMountainCar(10, 20, 10)
     algo.find_op(num_of_episodes=500)
-    algo.draw_round()
+    print(algo.draw_round())
